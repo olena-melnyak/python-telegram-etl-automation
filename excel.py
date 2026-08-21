@@ -13,8 +13,8 @@ async def process_excel(client) -> None:
         demo_wb = Workbook()
         demo_ws = demo_wb.active
         demo_ws.append(["phone"])
-        demo_ws.append(["+380XXXXXXXXX"])
-        demo_ws.append(["+380YYYYYYYYY"])
+        demo_ws.append(["380XXXXXXXXX"])
+        demo_ws.append(["380YYYYYYYYY"])
         demo_wb.save(EXCEL_PATH)
         print(f"Created demo input: {EXCEL_PATH}")
 
