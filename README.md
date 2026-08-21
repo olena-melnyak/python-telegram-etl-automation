@@ -126,11 +126,6 @@ The repository includes a safe Demo Mode that can be used without real Telegram 
 ```env
 DEMO_MODE=true
 ```
-## Demo
-
-Example of the automation pipeline running locally:
-
-<img src="screenshots/execution-demo.png" width="600">
 
 Demo Mode is intended for testing the pipeline structure and demonstrating the project publicly.
 
