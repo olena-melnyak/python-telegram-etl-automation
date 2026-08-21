@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Telegram authentication/session
+*.session
+*.session-journal
+
+# Local/private data
+phones.xlsx
+*.xlsx
+html/*
+logs/*
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Keep empty directories in Git
+!html/.gitkeep
+!logs/.gitkeep
