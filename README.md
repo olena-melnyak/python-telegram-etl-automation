@@ -1,83 +1,130 @@
-# Telegram + Python Automation / ETL Pipeline
+# Python Telegram ETL Automation
 
-Python-проєкт для автоматизації обробки списку вхідних значень через Telegram-інтеграцію та збереження результатів у Excel.
+Python automation project that demonstrates an end-to-end ETL workflow for processing structured input data, integrating with an external Telegram service, parsing HTML responses, transforming the results, and exporting structured data to Excel.
 
-> **Portfolio / safety note:** репозиторій навмисно не містить реальних номерів телефонів, Telegram-сесій, API credentials або HTML-відповідей із персональними даними. Інтеграції слід використовувати лише з дозволеними джерелами та відповідно до чинного законодавства і правил сервісів.
+> **Portfolio project:** This repository focuses on Python automation, ETL, asynchronous processing, data parsing, and reliable file-based data workflows.
 
-## Що демонструє проєкт
+## Overview
 
-- Python automation;
-- асинхронну роботу з Telegram через Telethon;
-- ETL-підхід: **Extract → Transform → Load**;
-- читання та оновлення Excel через `openpyxl`;
-- HTML parsing через BeautifulSoup + lxml;
-- конфігурацію через environment variables;
-- обробку помилок;
-- збереження результату після кожного запису;
-- CLI-запуск на macOS через `run.command`.
-
-## Архітектура
+The project automates a repetitive data-processing workflow:
 
 ```text
-Excel input
-    │
-    ▼
-excel.py ──► parser.py ──► Telegram / external source
-    │               │
-    │               └──► HTML parsing
-    ▼
-Excel output
+Input Data
+    ↓
+Excel / CSV
+    ↓
+Python Automation
+    ↓
+Telegram Integration
+    ↓
+HTML Response
+    ↓
+HTML Parser
+    ↓
+Data Transformation
+    ↓
+Excel Output
 ```
 
-### Файли
+The goal is to reduce manual work, standardize processing, and save intermediate results automatically during execution.
 
-| File | Purpose |
-|---|---|
-| `main.py` | Entry point, Telegram client lifecycle |
-| `excel.py` | Input/output layer for Excel |
-| `parser.py` | External-source adapter and HTML parsing |
-| `helpers.py` | Text-processing utilities |
-| `config.py` | Environment-based configuration |
-| `.env.example` | Safe configuration template |
-| `run.command` | macOS launcher |
-| `requirements.txt` | Python dependencies |
+## Key Features
 
-## ETL flow
+- Asynchronous Python workflow
+- Telegram client integration with Telethon
+- Excel input/output with OpenPyXL
+- HTML parsing with BeautifulSoup and lxml
+- Automatic result saving during processing
+- Logging and error handling
+- Environment-based configuration
+- Safe Demo Mode without real credentials
+- Local execution through a Mac `run.command` script
 
-### 1. Extract
+## Tech Stack
 
-Input rows are read from an Excel file. In live mode, the pipeline can send an input value to a configured Telegram bot and receive a response artifact.
+- **Python**
+- **AsyncIO**
+- **Telethon**
+- **OpenPyXL**
+- **BeautifulSoup**
+- **lxml**
+- **python-dotenv**
+- **Excel / CSV**
+- **HTML parsing**
 
-### 2. Transform
+## Project Structure
 
-The response is converted from HTML into structured metadata. The public example deliberately limits the extracted fields to non-sensitive operational metadata such as processing status and source.
+```text
+python-telegram-etl-automation/
+│
+├── main.py                 # Main application entry point
+├── parser.py               # HTML parsing and Telegram response processing
+├── excel.py                # Excel input/output operations
+├── helpers.py              # Utility functions
+├── config.py               # Application configuration
+│
+├── data/
+│   └── phones_example.csv  # Safe example input
+│
+├── html/
+│   └── .gitkeep            # Runtime HTML output directory
+│
+├── logs/
+│   └── .gitkeep            # Runtime logs directory
+│
+├── screenshots/
+│   └── execution-demo.png  # Example of the pipeline running
+│
+├── .env.example            # Environment variable template
+├── .gitignore               # Files excluded from Git
+├── requirements.txt         # Python dependencies
+└── run.command              # Mac launch script
+```
 
-### 3. Load
+## Demo
 
-Results are written back to the Excel workbook after every processed row. This reduces the risk of losing completed work if the process stops unexpectedly.
+Example of the automation pipeline running locally:
 
-## Demo mode
+<img src="screenshots/execution-demo.png" width="600">
 
-The repository starts in `DEMO_MODE=true`, so it can be demonstrated without Telegram credentials or network access.
+The application processes input records sequentially and displays the current progress and processing status.
 
-### Setup
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/olena-melnyak/python-telegram-etl-automation.git
+cd python-telegram-etl-automation
+```
+
+Create a virtual environment:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-python3 main.py
 ```
 
-The demo expects an Excel file at `data/phones.xlsx`. For a quick test, create a workbook with a first column named `phone` and add synthetic values.
+Install dependencies:
 
-For example:
+```bash
+pip install -r requirements.txt
+```
 
-```text
-phone
-+380XXXXXXXXX
-+380YYYYYYYYY
+Create a local environment file:
+
+```bash
+cp .env.example .env
+```
+
+Add your local configuration values to `.env`.
+
+## Demo Mode
+
+The repository includes a safe Demo Mode that can be used without real Telegram credentials or private source data.
+
+```env
+DEMO_MODE=true
 ```
 ## Demo
 
@@ -85,36 +132,90 @@ Example of the automation pipeline running locally:
 
 <img src="screenshots/execution-demo.png" width="600">
 
-## Live integration
+Demo Mode is intended for testing the pipeline structure and demonstrating the project publicly.
 
-For an authorized integration:
+## Configuration
 
-1. Set `DEMO_MODE=false` in `.env`.
-2. Add Telegram credentials to `.env`.
-3. Set the approved bot name.
-4. Keep the generated `.session` file local.
-5. Never commit `.env`, session files, real input datasets, or response HTML to GitHub.
+Sensitive credentials must be stored locally in `.env` and must never be committed to GitHub.
 
-## Security checklist
+Example:
 
-- [x] Credentials moved to environment variables.
-- [x] Telegram session files ignored by Git.
-- [x] Real Excel datasets excluded from Git.
-- [x] HTML response artifacts excluded from Git.
-- [x] Logs excluded from Git.
-- [x] Demo mode available without credentials.
-- [x] No real personal data included in the portfolio repository.
+```env
+TELEGRAM_API_ID=
+TELEGRAM_API_HASH=
+TELEGRAM_BOT_NAME=
+TELEGRAM_SESSION_NAME=osint_session
 
-## Skills demonstrated
+DEMO_MODE=true
 
-**Python · AsyncIO · Telethon · openpyxl · BeautifulSoup · lxml · ETL · Automation · Excel · Environment Variables · Error Handling · Git/GitHub**
+EXCEL_PATH=data/phones.xlsx
+HTML_FOLDER=html
+LOG_FOLDER=logs
+```
 
-## Possible improvements
+The repository intentionally does not contain:
 
-- structured logging with Python `logging`;
-- retry/backoff strategy;
-- configurable rate limits;
-- unit tests for parsing and Excel transformations;
-- typed data models with `dataclasses` or Pydantic;
-- Dockerized execution;
-- CI checks with GitHub Actions.
+- real credentials;
+- Telegram session files;
+- private input datasets;
+- real HTML responses;
+- runtime logs containing private data.
+
+## ETL Responsibilities
+
+### Extract
+
+The application reads structured input data from a local file and communicates with an external Telegram service when real mode is enabled.
+
+### Transform
+
+Responses are processed and parsed from HTML into structured values using Python parsing utilities.
+
+### Load
+
+Processed results are written back into a structured Excel workflow, with intermediate progress saved during execution.
+
+## Key Skills Demonstrated
+
+- Python automation
+- ETL pipeline design
+- Asynchronous programming
+- External service integration
+- HTML parsing
+- Excel automation
+- Data transformation
+- File-based data processing
+- Environment configuration
+- Logging and error handling
+- Secure handling of credentials
+
+## Reliability
+
+The workflow is designed to save progress during processing instead of waiting until the entire batch is complete. This reduces the risk of losing all results if execution is interrupted.
+
+## Future Improvements
+
+Potential next steps:
+
+- Add automated unit and integration tests
+- Add retry and backoff logic
+- Improve structured logging
+- Add configurable batch processing
+- Add Docker support
+- Add CI checks with GitHub Actions
+- Add a small test dataset for automated pipeline validation
+
+## Security
+
+This repository is a public portfolio project.
+
+Real credentials, session files, private datasets, and runtime results must remain outside version control.
+
+Always review `git status` before committing changes.
+
+## Author
+
+**Olena Melnyk**
+
+Data Analyst | Python Automation | SQL | Power BI
+
