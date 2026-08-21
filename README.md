@@ -83,8 +83,8 @@ phone
 
 Example of the automation pipeline running locally:
 
-![Execution Demo](screenshots/execution-demo.png)
 <img src="screenshots/execution-demo.png" width="600">
+
 ## Live integration
 
 For an authorized integration:
