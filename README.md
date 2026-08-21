@@ -79,6 +79,11 @@ phone
 +380XXXXXXXXX
 +380YYYYYYYYY
 ```
+## Demo
+
+Example of the automation pipeline running locally:
+
+![Execution Demo](screenshots/execution-demo.png)
 
 ## Live integration
 
